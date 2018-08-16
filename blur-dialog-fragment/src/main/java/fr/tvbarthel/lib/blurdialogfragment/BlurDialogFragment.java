@@ -3,12 +3,16 @@ package fr.tvbarthel.lib.blurdialogfragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
+
+import com.labo.kaji.swipeawaydialog.SwipeAwayDialogFragment;
+
+import fr.tvbarthel.lib.blurdialogfragment.async.BlurDialogEngine;
+import fr.tvbarthel.lib.blurdialogfragment.settings.DefaultSettings;
 
 /**
  * Encapsulate dialog behavior with blur effect for app using {@link android.app.DialogFragment}.
@@ -16,7 +20,7 @@ import android.view.WindowManager;
  * All the screen behind the dialog will be blurred except the action bar.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public abstract class BlurDialogFragment extends DialogFragment {
+public abstract class BlurDialogFragment extends SwipeAwayDialogFragment {
 
     /**
      * Engine used to blur.
@@ -140,7 +144,7 @@ public abstract class BlurDialogFragment extends DialogFragment {
      * @return true if debug mode should be enabled.
      */
     protected boolean isDebugEnable() {
-        return BlurDialogEngine.DEFAULT_DEBUG_POLICY;
+        return DefaultSettings.DEFAULT_DEBUG_POLICY;
     }
 
     /**
@@ -154,7 +158,7 @@ public abstract class BlurDialogFragment extends DialogFragment {
      * @return customized down scaled factor.
      */
     protected float getDownScaleFactor() {
-        return BlurDialogEngine.DEFAULT_BLUR_DOWN_SCALE_FACTOR;
+        return DefaultSettings.DEFAULT_BLUR_DOWN_SCALE_FACTOR;
     }
 
     /**
@@ -168,7 +172,7 @@ public abstract class BlurDialogFragment extends DialogFragment {
      * @return customized blur radius.
      */
     protected int getBlurRadius() {
-        return BlurDialogEngine.DEFAULT_BLUR_RADIUS;
+        return DefaultSettings.DEFAULT_BLUR_RADIUS;
     }
 
     /**
@@ -181,7 +185,7 @@ public abstract class BlurDialogFragment extends DialogFragment {
      * @return true to enable the dimming effect.
      */
     protected boolean isDimmingEnable() {
-        return BlurDialogEngine.DEFAULT_DIMMING_POLICY;
+        return DefaultSettings.DEFAULT_DIMMING_POLICY;
     }
 
     /**
@@ -194,7 +198,7 @@ public abstract class BlurDialogFragment extends DialogFragment {
      * @return true to enable the blur effect on the action bar.
      */
     protected boolean isActionBarBlurred() {
-        return BlurDialogEngine.DEFAULT_ACTION_BAR_BLUR;
+        return DefaultSettings.DEFAULT_ACTION_BAR_BLUR;
     }
 
     /**
@@ -217,6 +221,6 @@ public abstract class BlurDialogFragment extends DialogFragment {
      * @return true to enable RenderScript.
      */
     protected boolean isRenderScriptEnable() {
-        return BlurDialogEngine.DEFAULT_USE_RENDERSCRIPT;
+        return DefaultSettings.DEFAULT_USE_RENDERSCRIPT;
     }
 }

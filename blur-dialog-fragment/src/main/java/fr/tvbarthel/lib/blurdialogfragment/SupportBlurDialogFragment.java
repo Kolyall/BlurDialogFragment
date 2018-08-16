@@ -4,9 +4,17 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
+
+import com.labo.kaji.swipeawaydialog.support.v4.SwipeAwayDialogFragment;
+import com.squareup.picasso.Transformation;
+
+import java.util.Arrays;
+import java.util.List;
+
+import fr.tvbarthel.lib.blurdialogfragment.rx.RxBlurDialogEngine;
+import fr.tvbarthel.lib.blurdialogfragment.settings.DefaultSettings;
 
 /**
  * Encapsulate dialog behavior with blur effect for
@@ -14,12 +22,12 @@ import android.view.WindowManager;
  * <p/>
  * All the screen behind the dialog will be blurred except the action bar.
  */
-public abstract class SupportBlurDialogFragment extends DialogFragment {
+public abstract class SupportBlurDialogFragment extends SwipeAwayDialogFragment {
 
     /**
      * Engine used to blur.
      */
-    private BlurDialogEngine mBlurEngine;
+    private RxBlurDialogEngine mBlurEngine;
 
     /**
      * Allow to set a Toolbar which isn't set as actionbar.
@@ -43,8 +51,8 @@ public abstract class SupportBlurDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mBlurEngine = new BlurDialogEngine(getActivity());
-
+        mBlurEngine = new RxBlurDialogEngine(getActivity());
+        mBlurEngine.addTransformations(getWindowTransformations());
         if (mToolbar != null) {
             mBlurEngine.setToolbar(mToolbar);
         }
@@ -70,6 +78,10 @@ public abstract class SupportBlurDialogFragment extends DialogFragment {
         mDimmingEffect = isDimmingEnable();
     }
 
+    protected List<Transformation> getWindowTransformations() {
+        return Arrays.asList();
+    }
+
     @Override
     public void onStart() {
         Dialog dialog = getDialog();
@@ -93,7 +105,12 @@ public abstract class SupportBlurDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(enableBlurBackground())
         mBlurEngine.onResume(getRetainInstance());
+    }
+
+    public boolean enableBlurBackground() {
+        return true;
     }
 
     @Override
@@ -138,7 +155,7 @@ public abstract class SupportBlurDialogFragment extends DialogFragment {
      * @return true if debug mode should be enabled.
      */
     protected boolean isDebugEnable() {
-        return BlurDialogEngine.DEFAULT_DEBUG_POLICY;
+        return DefaultSettings.DEFAULT_DEBUG_POLICY;
     }
 
     /**
@@ -152,7 +169,7 @@ public abstract class SupportBlurDialogFragment extends DialogFragment {
      * @return customized down scaled factor.
      */
     protected float getDownScaleFactor() {
-        return BlurDialogEngine.DEFAULT_BLUR_DOWN_SCALE_FACTOR;
+        return DefaultSettings.DEFAULT_BLUR_DOWN_SCALE_FACTOR;
     }
 
     /**
@@ -166,7 +183,7 @@ public abstract class SupportBlurDialogFragment extends DialogFragment {
      * @return customized blur radius.
      */
     protected int getBlurRadius() {
-        return BlurDialogEngine.DEFAULT_BLUR_RADIUS;
+        return DefaultSettings.DEFAULT_BLUR_RADIUS;
     }
 
     /**
@@ -179,7 +196,7 @@ public abstract class SupportBlurDialogFragment extends DialogFragment {
      * @return enable true to enable the dimming effect.
      */
     protected boolean isDimmingEnable() {
-        return BlurDialogEngine.DEFAULT_DIMMING_POLICY;
+        return DefaultSettings.DEFAULT_DIMMING_POLICY;
     }
 
     /**
@@ -192,7 +209,7 @@ public abstract class SupportBlurDialogFragment extends DialogFragment {
      * @return true to enable the blur effect on the action bar.
      */
     protected boolean isActionBarBlurred() {
-        return BlurDialogEngine.DEFAULT_ACTION_BAR_BLUR;
+        return DefaultSettings.DEFAULT_ACTION_BAR_BLUR;
     }
 
     /**
@@ -215,7 +232,7 @@ public abstract class SupportBlurDialogFragment extends DialogFragment {
      * @return true to enable RenderScript.
      */
     protected boolean isRenderScriptEnable() {
-        return BlurDialogEngine.DEFAULT_USE_RENDERSCRIPT;
+        return DefaultSettings.DEFAULT_USE_RENDERSCRIPT;
     }
 
 }
