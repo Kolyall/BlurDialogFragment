@@ -1,0 +1,24 @@
+ext {
+    bintrayRepo = 'maven'//name of Repo on https://bintray.com/nickunuchek
+    bintrayName = 'blur-dialog-fragment'//name of project on https://bintray.com/nickunuchek/maven
+
+    publishedGroupId = 'com.github.kolyall'//only this
+    artifact = 'blur-dialog-fragment'//should be the same as module name
+    artifactLocal = 'blur-dialog-fragment'//should be the same as module name
+    libraryVersion = appVersionName
+
+    libraryName = 'blur-dialog-fragment'
+
+    libraryDescription = 'A wrapper for blur-dialog-fragment on Android'
+
+    siteUrl = 'https://github.com/Kolyall/BlurDialogFragment'
+    gitUrl = 'https://github.com/Kolyall/BlurDialogFragment.git'
+
+    developerId = 'nickunuchek'
+    developerName = 'Nick Unuchek'
+    developerEmail = 'kolyall@tut.by'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}

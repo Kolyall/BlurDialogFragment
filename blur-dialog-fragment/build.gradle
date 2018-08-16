@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+apply from: '../config/quality.gradle'
+apply from: 'appVersion.gradle'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 23
+        renderscriptTargetApi 22
+        renderscriptSupportModeEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:28.0.0-alpha3'
+}
+
+task findConventions << {
+    println project.getConvention()
+}
+
+// Place it at the end of the file
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+    }
+}
+
+apply from: 'libraryInfo.gradle'
+apply from: 'artifactsSetup.gradle'
+apply from: 'installSetup.gradle'
+apply from: 'bintraySetup.gradle'
+apply from: 'mavenCustom.gradle'

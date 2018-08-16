@@ -17,7 +17,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -393,7 +392,6 @@ public class BlurDialogEngine {
         }
         try {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
-                || mHoldingActivity instanceof ActionBarActivity
                 || mHoldingActivity instanceof AppCompatActivity) {
                 //add offset as top margin since actionBar height must also considered when we display
                 // the blurred background. Don't want to draw on the actionBar.
@@ -455,12 +453,6 @@ public class BlurDialogEngine {
         try {
             if (mToolbar != null) {
                 actionBarHeight = mToolbar.getHeight();
-            } else if (mHoldingActivity instanceof ActionBarActivity) {
-                ActionBar supportActionBar
-                    = ((ActionBarActivity) mHoldingActivity).getSupportActionBar();
-                if (supportActionBar != null) {
-                    actionBarHeight = supportActionBar.getHeight();
-                }
             } else if (mHoldingActivity instanceof AppCompatActivity) {
                 ActionBar supportActionBar
                     = ((AppCompatActivity) mHoldingActivity).getSupportActionBar();
