@@ -9,8 +9,6 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 23
-        renderscriptTargetApi 22
-        renderscriptSupportModeEnabled true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -37,7 +35,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:28.0.0-alpha3'
     api 'com.github.kolyall:rx-android-utils:1.0.0'
-    api 'com.github.kolyall:picasso-transformations:1.0.9'
+    api 'com.github.kolyall:picasso-transformations:1.1.0'
     api ('com.labo.kaji:swipeawaydialog:0.1.1'){
         exclude group: 'com.android.support', module: 'support-v4'
     }
