@@ -53,7 +53,7 @@ publishing {
     repositories {
         maven {
             // change URLs to point to your repos, e.g. http://my.org/repo
-            def mavenCustom = uri("D:/gramophone-android/modules/maven/repository")
+            def mavenCustom = uri("d:/Android/workspace/gramophone-libraries-android/maven/repository")
             url = mavenCustom
             name = 'mavenCustom'
         }
