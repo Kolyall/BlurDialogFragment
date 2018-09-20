@@ -5,12 +5,32 @@ publishing {
     publications {
         androidLibrary(MavenPublication) {
             groupId publishedGroupId
-            artifactId artifactLocal
+            artifactId artifact
             version libraryVersion
 
             artifact bundleRelease
             artifact sourcesJar
             artifact javadocJar
+
+            // Add your description here
+            pom.withXml {
+                def projectTag = asNode()
+                projectTag.appendNode('name', libraryName)
+                projectTag.appendNode('description', libraryDescription)
+                projectTag.appendNode('url', siteUrl)
+                // Set your license
+                def licenseTag = projectTag.appendNode('licenses').appendNode('license')
+                licenseTag.appendNode('name', licenseName)
+                licenseTag.appendNode('url', licenseUrl)
+                def developerTag = projectTag.appendNode('developers').appendNode('developer')
+                developerTag.appendNode('id', developerId)
+                developerTag.appendNode('name', developerName)
+                developerTag.appendNode('email', developerEmail)
+                def scmTag = projectTag.appendNode('scm')
+                scmTag.appendNode('connection', gitUrl)
+                scmTag.appendNode('developerConnection', gitUrl)
+                scmTag.appendNode('url', siteUrl)
+            }
 
             pom.withXml {
                 final dependenciesNode = asNode().appendNode('dependencies')
@@ -28,14 +48,15 @@ publishing {
                     if (!dep.transitive) {
                         // If this dependency is transitive, we should force exclude all its dependencies them from the POM
                         final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
-                        exclusionNode.appendNode('groupId', '*')
                         exclusionNode.appendNode('artifactId', '*')
+                        exclusionNode.appendNode('groupId', '*')
                     } else if (!dep.properties.excludeRules.empty) {
                         // Otherwise add specified exclude rules
-                        final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+                        final exclusionsNode = dependencyNode.appendNode('exclusions')
                         dep.properties.excludeRules.each { ExcludeRule rule ->
-                            exclusionNode.appendNode('groupId', rule.group ?: '*')
-                            exclusionNode.appendNode('artifactId', rule.module ?: '*')
+                            def exclusion = exclusionsNode.appendNode('exclusion')
+                            exclusion.appendNode('artifactId', rule.module ?: '*')
+                            exclusion.appendNode('groupId', rule.group ?: '*')
                         }
                     }
                 }
@@ -45,7 +66,7 @@ publishing {
                 // List all "api" dependencies (for new Gradle) as "compile" dependencies
                 configurations.api.getAllDependencies().each { dep -> addDependency(dep, "compile") }
 //                // List all "implementation" dependencies (for new Gradle) as "runtime" dependencies
-//                configurations.implementation.getAllDependencies().each { dep -> addDependency(dep, "runtime") }
+                configurations.implementation.getAllDependencies().each { dep -> addDependency(dep, "runtime") }
             }
         }
     }
