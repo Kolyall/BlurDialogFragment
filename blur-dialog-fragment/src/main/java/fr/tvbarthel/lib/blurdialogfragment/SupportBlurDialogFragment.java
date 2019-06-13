@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 
 import com.labo.kaji.swipeawaydialog.support.v4.SwipeAwayDialogFragment;
@@ -13,12 +12,14 @@ import com.squareup.picasso.Transformation;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import fr.tvbarthel.lib.blurdialogfragment.rx.RxBlurDialogEngine;
 import fr.tvbarthel.lib.blurdialogfragment.settings.DefaultSettings;
 
 /**
  * Encapsulate dialog behavior with blur effect for
- * app using {@link android.support.v4.app.DialogFragment}.
+ * app using {@link DialogFragment}.
  * <p/>
  * All the screen behind the dialog will be blurred except the action bar.
  */

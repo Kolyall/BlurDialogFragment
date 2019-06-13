@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
@@ -17,15 +16,14 @@ import com.squareup.picasso.Transformation;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.widget.Toolbar;
 import fr.tvbarthel.lib.blurdialogfragment.R;
-import fr.tvbarthel.lib.blurdialogfragment.settings.BlurResponse;
 import fr.tvbarthel.lib.blurdialogfragment.settings.BlurringSettings;
 import fr.tvbarthel.lib.blurdialogfragment.settings.DefaultSettings;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Encapsulate the whole behaviour to provide a blur effect on a DialogFragment.
@@ -132,7 +130,7 @@ public class RxBlurDialogEngine {
             }
         }
     }
-    Subscription mSubscription;
+    Disposable mSubscription;
     public void performBlur() {
         List<Transformation> transformations = new ArrayList<>();
         transformations.add(getBlurTransformation());
@@ -142,19 +140,7 @@ public class RxBlurDialogEngine {
         mSubscription = rxBluring.getBlurResponseObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BlurResponse>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(BlurResponse blurResponse) {
+                .subscribe(blurResponse -> {
                         mBlurredImageView = blurResponse.getImageView();
                         FrameLayout.LayoutParams layoutParams = blurResponse.getLayoutParams();
 
@@ -170,8 +156,7 @@ public class RxBlurDialogEngine {
                                 .setDuration(mAnimationDuration)
                                 .setInterpolator(new LinearInterpolator())
                                 .start();
-                    }
-                });
+                }, Throwable::printStackTrace);
     }
 
     /**
@@ -182,8 +167,8 @@ public class RxBlurDialogEngine {
         //remove blurred background and clear memory, could be null if dismissed before blur effect
         //processing ends
         //cancel async task
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (mSubscription != null && !mSubscription.isDisposed()) {
+            mSubscription.dispose();
         }
         if (mBlurredImageView != null) {
                 mBlurredImageView
@@ -211,8 +196,8 @@ public class RxBlurDialogEngine {
      * Must be linked to the original lifecycle.
      */
     public void onDetach() {
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (mSubscription != null && !mSubscription.isDisposed()) {
+            mSubscription.dispose();
         }
         mSubscription = null;
         mHoldingActivity = null;

@@ -6,11 +6,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 
 import com.labo.kaji.swipeawaydialog.SwipeAwayDialogFragment;
 
+import androidx.appcompat.widget.Toolbar;
 import fr.tvbarthel.lib.blurdialogfragment.async.BlurDialogEngine;
 import fr.tvbarthel.lib.blurdialogfragment.settings.DefaultSettings;
 

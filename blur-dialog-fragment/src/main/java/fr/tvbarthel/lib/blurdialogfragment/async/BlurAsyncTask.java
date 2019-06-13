@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.AsyncTask;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
 import fr.tvbarthel.lib.blurdialogfragment.manager.BlurManager;
